@@ -14,43 +14,76 @@
         <img src="assets/miku_header.png" alt="Hatsune Miku header">
     </header>
 
-    <div class="container">
+    <main class="container">
         <h1 id="modeTitle">Study</h1>
 
-        <div class="timer-display">
+        <div class="timer-display" aria-live="polite">
             <span id="timer">25:00</span>
         </div>
 
-        <div class="session-dots" id="sessionDots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+        <div class="session-dots" id="sessionDots" aria-label="Session progress indicator" title="8 stages: 4 Focus, 4 Breaks">
+            <span class="dot" title="Focus 1"></span>
+            <span class="dot" title="Break 1"></span>
+            <span class="dot" title="Focus 2"></span>
+            <span class="dot" title="Break 2"></span>
+            <span class="dot" title="Focus 3"></span>
+            <span class="dot" title="Break 3"></span>
+            <span class="dot" title="Focus 4"></span>
+            <span class="dot" title="Long Break"></span>
         </div>
 
-        <div class="buttons">
-            <button id="startBtn" class="btn btn-primary">Start</button>
-            <button id="resetBtn" class="btn btn-secondary">Reset</button>
-        </div>
-    </div>
+        <fieldset class="settings-box">
+            <legend class="sr-only">Timer Settings</legend>
+            <div class="setting-item">
+                <label for="focusMin">Focus</label>
+                <div class="time-input-group">
+                    <input type="number" id="focusMin" min="0" max="180" value="25" title="Focus duration (minutes)" aria-label="Focus minutes">
+                    <span>:</span>
+                    <input type="number" id="focusSec" min="0" max="59" value="00" title="Focus duration (seconds)" aria-label="Focus seconds">
+                </div>
+            </div>
+            <div class="setting-item">
+                <label for="breakMin">Short</label>
+                <div class="time-input-group">
+                    <input type="number" id="breakMin" min="0" max="60" value="5" title="Short break duration (minutes)" aria-label="Short break minutes">
+                    <span>:</span>
+                    <input type="number" id="breakSec" min="0" max="59" value="00" title="Short break duration (seconds)" aria-label="Short break seconds">
+                </div>
+            </div>
+            <div class="setting-item">
+                <label for="longBreakMin">Long</label>
+                <div class="time-input-group">
+                    <input type="number" id="longBreakMin" min="0" max="120" value="15" title="Long break duration (minutes)" aria-label="Long break minutes">
+                    <span>:</span>
+                    <input type="number" id="longBreakSec" min="0" max="59" value="00" title="Long break duration (seconds)" aria-label="Long break seconds">
+                </div>
+            </div>
+        </fieldset>
 
-    <div class="history-box">
+        <nav class="buttons" aria-label="Timer controls">
+            <button id="startBtn" class="btn btn-primary" title="Start or Pause Timer">Start</button>
+            <button id="resetBtn" class="btn btn-secondary" title="Reset current session">Reset</button>
+            <button id="stopAudioBtn" class="btn btn-secondary" title="Silence all actively playing audio">Stop Audio</button>
+        </nav>
+    </main>
+
+    <aside class="history-box" aria-labelledby="historyTitle">
         <h2 id="historyTitle">History</h2>
-        <ul id="historyList">
+        <ul id="historyList" aria-live="polite">
             <li class="empty-history">No sessions completed today yet.</li>
         </ul>
-    </div>
+    </aside>
 
-    <div id="breakModal" class="modal" style="display: none;">
+    <div id="breakModal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-content">
-            <h2>Break Time!</h2>
-            <div id="modalTimer" class="modal-timer">00:11</div>
+            <h2 id="modalTitle">Break Time!</h2>
+            <div id="modalTimer" class="modal-timer" aria-live="polite">00:11</div>
             <img src="assets/break_time.png" alt="Break Time!">
-            <button id="closeModalBtn" class="btn btn-primary">End Break Early</button>
+            <button id="closeModalBtn" class="btn btn-primary" title="End Break Early">End Break Early</button>
         </div>
     </div>
 
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
