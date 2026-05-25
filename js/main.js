@@ -56,8 +56,8 @@ function renderHistory() {
     });
 }
 
-function logFocusSession() {
-    const totalSeconds = Math.round(studyDuration * 60);
+function logSession(type, duration) {
+    const totalSeconds = Math.round(duration * 60);
     const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const secs = (totalSeconds % 60).toString().padStart(2, '0');
     const durationText = `${mins}:${secs}`;
@@ -71,7 +71,7 @@ function logFocusSession() {
     const timeText = `${hours}:${minutes}${ampm}`;
 
     historyData.sessions.push({
-        text: `✓ ${durationText} focus`,
+        text: `✓ ${durationText} ${type}`,
         time: timeText
     });
 
@@ -111,7 +111,7 @@ function silenceAlarm() {
 
 function switchMode() {
     if (currentMode === 'study') {
-        logFocusSession();
+        logSession('focus', studyDuration);
         currentMode = 'break';
         secondsRemaining = breakDuration * 60;
         modeTitle.textContent = 'Break';
@@ -119,6 +119,7 @@ function switchMode() {
         document.body.classList.add('break-mode');
         breakModal.style.display = 'flex';
     } else {
+        logSession('break', breakDuration);
         currentMode = 'study';
         secondsRemaining = studyDuration * 60;
         modeTitle.textContent = 'Study';

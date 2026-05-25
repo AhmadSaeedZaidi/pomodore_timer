@@ -37,8 +37,6 @@ header img {
     border: 3px solid rgb(32, 75, 98);
     padding: 3rem 2rem;
     width: calc(37.4% + 3px);
-    max-width: 769px;
-    min-width: 303px;
     margin: 2rem auto;
     text-align: center;
     transition: border-color 0.2s ease;
@@ -47,7 +45,6 @@ header img {
 .container {
     border-top: none;
     border-radius: 0 0 16px 16px;
-    /* Shorthand: top flat, bottom rounded */
     margin-top: 0;
     margin-bottom: 3rem;
 }
