@@ -1,0 +1,20 @@
+{
+  "name": "zenpomodoro",
+  "version": "1.0.0",
+  "description": "An elegant, premium glassmorphism Pomodoro Timer.",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "glassmorphism",
+    "focus"
+  ],
+  "author": "",
+  "license": "MIT"
+}

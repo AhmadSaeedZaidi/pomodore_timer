@@ -1,0 +1,45 @@
+/* Colors from miku colour palette */
+:root {
+    --color-blue-deep: #0ca5c5;
+    --color-purple: #e480ff;
+    --color-cyan: #00ecff;
+    --color-mint: #1ce5c2;
+    --color-blue-sky: #00abff;
+
+    --bg-app: #0f1015;
+    --bg-card: #181920;
+    --text-main: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: var(--bg-card);
+    border: 2px solid var(--color-blue-sky);
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+}
+
+.timer-time {
+    font-size: 3rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
