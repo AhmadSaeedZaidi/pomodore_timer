@@ -23,7 +23,8 @@ let currentMode = 'study';
 let historyData = {
     date: new Date().toDateString(),
     sessions: [],
-    completedSessions: 0
+    completedSessions: 0,
+    totalFocusCount: 0
 };
 
 function loadHistory() {
@@ -36,7 +37,7 @@ function loadHistory() {
                 if (historyData.completedSessions === undefined) {
                     historyData.completedSessions = 0;
                 }
-                if (historyData.totalFocusCount === undefined) {
+                if (historyData.totalFocusCount === undefined || isNaN(historyData.totalFocusCount)) {
                     historyData.totalFocusCount = 0;
                 }
             } else {
