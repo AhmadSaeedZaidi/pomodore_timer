@@ -36,7 +36,7 @@ header img {
     background-color: transparent;
     border: 3px solid rgb(32, 75, 98);
     padding: 3rem 2rem;
-    width: calc(37.4% + 3px);
+    width: calc(37.4% + 8px);
     margin: 2rem auto;
     text-align: center;
     transition: border-color 0.2s ease;
@@ -134,8 +134,8 @@ h1 {
 
     .container,
     .history-box {
-        width: calc(74.8% + 6px);
-        /* Mathematically exact: 37.4% * 2 = 74.8% + 6px to retain perfect image-alignment on mobile */
+        width: calc(74.8% + 8px);
+        /* Mathematically exact: 37.4% * 2 = 74.8% + 8px to retain perfect image-alignment on mobile */
     }
 }
 

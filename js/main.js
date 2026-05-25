@@ -10,20 +10,21 @@ const historyList = document.getElementById('historyList');
 const alarm = new Audio('assets/miku_ringtone.mp3');
 const longBreakAlarm = new Audio('assets/session_complete.mp3');
 
-const studyDuration = 11 / 60;
-const shortBreakDuration = 11 / 60;
-const longBreakDuration = 15 / 60;
+const studyDuration = 25 * 60;
+const shortBreakDuration = 5 * 60;
+const longBreakDuration = 15 * 60;
 
 let timerInterval = null;
 let alarmTimeout = null;
-let secondsRemaining = studyDuration * 60;
+let secondsRemaining = studyDuration;
 let isRunning = false;
 let currentMode = 'study';
 
 let historyData = {
     date: new Date().toDateString(),
     sessions: [],
-    completedSessions: 0
+    completedSessions: 0,
+    totalFocusCount: 0
 };
 
 function loadHistory() {
@@ -36,7 +37,7 @@ function loadHistory() {
                 if (historyData.completedSessions === undefined) {
                     historyData.completedSessions = 0;
                 }
-                if (historyData.totalFocusCount === undefined) {
+                if (historyData.totalFocusCount === undefined || isNaN(historyData.totalFocusCount)) {
                     historyData.totalFocusCount = 0;
                 }
             } else {
@@ -52,6 +53,7 @@ function loadHistory() {
 function renderHistory() {
     if (!historyList) return;
     historyList.innerHTML = '';
+
     const historyTitle = document.getElementById('historyTitle');
     if (historyTitle) {
         const count = historyData.totalFocusCount || 0;
@@ -85,7 +87,7 @@ function updateDots() {
 }
 
 function logSession(type, duration) {
-    const totalSeconds = Math.round(duration * 60);
+    const totalSeconds = Math.round(duration);
     const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const secs = (totalSeconds % 60).toString().padStart(2, '0');
     const durationText = `${mins}:${secs}`;
@@ -160,10 +162,8 @@ function switchMode() {
     let isLongBreak = false;
 
     if (currentMode === 'study') {
-        // Study session complete, log it
         logSession('focus', studyDuration);
 
-        // Increment completed focus sessions
         historyData.completedSessions++;
         localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
 
@@ -173,11 +173,11 @@ function switchMode() {
 
         if (historyData.completedSessions === 4) {
             isLongBreak = true;
-            secondsRemaining = longBreakDuration * 60;
+            secondsRemaining = longBreakDuration;
             modeTitle.textContent = 'Long Break';
             if (modalTitleElement) modalTitleElement.textContent = 'Long Break Time!';
         } else {
-            secondsRemaining = shortBreakDuration * 60;
+            secondsRemaining = shortBreakDuration;
             modeTitle.textContent = 'Break';
             if (modalTitleElement) modalTitleElement.textContent = 'Break Time!';
         }
@@ -191,7 +191,7 @@ function switchMode() {
         localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
 
         currentMode = 'study';
-        secondsRemaining = studyDuration * 60;
+        secondsRemaining = studyDuration;
         modeTitle.textContent = 'Study';
         document.body.classList.remove('break-mode');
         breakModal.style.display = 'none';
@@ -227,7 +227,7 @@ function resetTimer() {
     silenceAlarm();
     isRunning = false;
     currentMode = 'study';
-    secondsRemaining = studyDuration * 60;
+    secondsRemaining = studyDuration;
     modeTitle.textContent = 'Study';
     startBtn.textContent = 'Start';
 
@@ -250,7 +250,7 @@ closeModalBtn.addEventListener('click', () => {
     }
 
     currentMode = 'study';
-    secondsRemaining = studyDuration * 60;
+    secondsRemaining = studyDuration;
     modeTitle.textContent = 'Study';
     document.body.classList.remove('break-mode');
     breakModal.style.display = 'none';
