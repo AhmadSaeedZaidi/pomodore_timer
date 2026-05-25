@@ -1,20 +1,22 @@
 {
-  "name": "zenpomodoro",
+  "name": "mikutimer",
   "version": "1.0.0",
-  "description": "An elegant, premium glassmorphism Pomodoro Timer.",
+  "description": "Miku Pomodoro Timer",
   "main": "index.html",
   "scripts": {
-    "start": "live-server"
+    "start": "live-server",
+    "deploy": "gh-pages -d ."
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "live-server": "^1.2.2"
   },
   "keywords": [
     "pomodoro",
     "timer",
-    "glassmorphism",
+    "miku",
     "focus"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "Apache-2.0"
 }

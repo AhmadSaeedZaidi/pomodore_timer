@@ -7,10 +7,12 @@ const breakModal = document.getElementById('breakModal');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const historyList = document.getElementById('historyList');
 
-const alarm = new Audio('miku_ringtone.mp3');
+const alarm = new Audio('assets/miku_ringtone.mp3');
+const longBreakAlarm = new Audio('assets/session_complete.mp3');
 
 const studyDuration = 11 / 60;
-const breakDuration = 11 / 60;
+const shortBreakDuration = 11 / 60;
+const longBreakDuration = 15 / 60;
 
 let timerInterval = null;
 let alarmTimeout = null;
@@ -20,7 +22,8 @@ let currentMode = 'study';
 
 let historyData = {
     date: new Date().toDateString(),
-    sessions: []
+    sessions: [],
+    completedSessions: 0
 };
 
 function loadHistory() {
@@ -30,6 +33,12 @@ function loadHistory() {
             const parsed = JSON.parse(saved);
             if (parsed.date === new Date().toDateString()) {
                 historyData = parsed;
+                if (historyData.completedSessions === undefined) {
+                    historyData.completedSessions = 0;
+                }
+                if (historyData.totalFocusCount === undefined) {
+                    historyData.totalFocusCount = 0;
+                }
             } else {
                 localStorage.removeItem('pomodoroHistory');
             }
@@ -43,9 +52,15 @@ function loadHistory() {
 function renderHistory() {
     if (!historyList) return;
     historyList.innerHTML = '';
+    const historyTitle = document.getElementById('historyTitle');
+    if (historyTitle) {
+        const count = historyData.totalFocusCount || 0;
+        historyTitle.textContent = `History — ${count} Focus Session${count === 1 ? '' : 's'} Today`;
+    }
 
     if (historyData.sessions.length === 0) {
         historyList.innerHTML = '<li class="empty-history">No sessions completed today yet.</li>';
+        updateDots();
         return;
     }
 
@@ -53,6 +68,19 @@ function renderHistory() {
         const li = document.createElement('li');
         li.innerHTML = `<span>${session.text}</span><span>${session.time}</span>`;
         historyList.appendChild(li);
+    });
+
+    updateDots();
+}
+
+function updateDots() {
+    const dots = document.querySelectorAll('#sessionDots .dot');
+    dots.forEach((dot, index) => {
+        if (index < historyData.completedSessions) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
     });
 }
 
@@ -70,8 +98,18 @@ function logSession(type, duration) {
     hours = hours ? hours : 12;
     const timeText = `${hours}:${minutes}${ampm}`;
 
+    let text = '';
+    if (type === 'focus') {
+        historyData.totalFocusCount++;
+        text = `✓ Focus Session #${historyData.totalFocusCount} (${durationText})`;
+    } else if (type === 'long break') {
+        text = `★ Pomodoro Cycle Complete (${durationText})`;
+    } else {
+        text = `✓ Break (${durationText})`;
+    }
+
     historyData.sessions.push({
-        text: `✓ ${durationText} ${type}`,
+        text: text,
         time: timeText
     });
 
@@ -92,43 +130,75 @@ function updateDisplay() {
     }
 }
 
-function triggerAlarm() {
-    alarm.currentTime = 0;
-    alarm.play().catch(err => console.log("Audio deferred: requires first user interaction."));
-
-    clearTimeout(alarmTimeout);
-    alarmTimeout = setTimeout(() => {
-        alarm.pause();
+function triggerAlarm(isLongBreak) {
+    if (isLongBreak) {
+        longBreakAlarm.loop = false;
+        longBreakAlarm.currentTime = 0;
+        longBreakAlarm.play().catch(err => console.log("Audio deferred: requires first user interaction."));
+    } else {
         alarm.currentTime = 0;
-    }, 11000);
+        alarm.play().catch(err => console.log("Audio deferred: requires first user interaction."));
+
+        clearTimeout(alarmTimeout);
+        alarmTimeout = setTimeout(() => {
+            alarm.pause();
+            alarm.currentTime = 0;
+        }, 11000);
+    }
 }
 
 function silenceAlarm() {
     alarm.pause();
     alarm.currentTime = 0;
+    longBreakAlarm.pause();
+    longBreakAlarm.currentTime = 0;
     clearTimeout(alarmTimeout);
 }
 
 function switchMode() {
-    if (currentMode === 'study') {
-        logSession('focus', studyDuration);
-        currentMode = 'break';
-        secondsRemaining = breakDuration * 60;
-        modeTitle.textContent = 'Break';
+    const modalTitleElement = document.querySelector('#breakModal h2');
+    let isLongBreak = false;
 
+    if (currentMode === 'study') {
+        // Study session complete, log it
+        logSession('focus', studyDuration);
+
+        // Increment completed focus sessions
+        historyData.completedSessions++;
+        localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
+
+        currentMode = 'break';
         document.body.classList.add('break-mode');
         breakModal.style.display = 'flex';
+
+        if (historyData.completedSessions === 4) {
+            isLongBreak = true;
+            secondsRemaining = longBreakDuration * 60;
+            modeTitle.textContent = 'Long Break';
+            if (modalTitleElement) modalTitleElement.textContent = 'Long Break Time!';
+        } else {
+            secondsRemaining = shortBreakDuration * 60;
+            modeTitle.textContent = 'Break';
+            if (modalTitleElement) modalTitleElement.textContent = 'Break Time!';
+        }
     } else {
-        logSession('break', breakDuration);
+        if (historyData.completedSessions === 4) {
+            logSession('long break', longBreakDuration);
+            historyData.completedSessions = 0;
+        } else {
+            logSession('short break', shortBreakDuration);
+        }
+        localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
+
         currentMode = 'study';
         secondsRemaining = studyDuration * 60;
         modeTitle.textContent = 'Study';
-
         document.body.classList.remove('break-mode');
         breakModal.style.display = 'none';
     }
 
-    triggerAlarm();
+    triggerAlarm(isLongBreak);
+    renderHistory();
     updateDisplay();
 }
 
@@ -160,19 +230,32 @@ function resetTimer() {
     secondsRemaining = studyDuration * 60;
     modeTitle.textContent = 'Study';
     startBtn.textContent = 'Start';
+
+    historyData.completedSessions = 0;
+    localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
+
     document.body.classList.remove('break-mode');
     breakModal.style.display = 'none';
+
+    renderHistory();
     updateDisplay();
 }
 
 closeModalBtn.addEventListener('click', () => {
     silenceAlarm();
+
+    if (historyData.completedSessions === 4) {
+        historyData.completedSessions = 0;
+        localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
+    }
+
     currentMode = 'study';
     secondsRemaining = studyDuration * 60;
     modeTitle.textContent = 'Study';
     document.body.classList.remove('break-mode');
     breakModal.style.display = 'none';
 
+    renderHistory();
     updateDisplay();
 });
 

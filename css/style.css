@@ -257,3 +257,33 @@ body.break-mode .history-box {
     border-bottom: none;
     font-style: italic;
 }
+
+
+
+.session-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1.5rem auto;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background-color: transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dot.active {
+    background-color: var(--color-cyan);
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 8px var(--color-cyan);
+}
+
+body.break-mode .dot.active {
+    background-color: var(--color-pink);
+    border-color: var(--color-pink);
+    box-shadow: 0 0 8px var(--color-pink);
+}
