@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <img src="assets/miku_header.png" alt="Hatsune Miku header">
+    </header>
+
+    <div class="container">
+        <h1 id="modeTitle">Study</h1>
+
+        <div class="timer-display">
+            <span id="timer">25:00</span>
+        </div>
+
+        <div class="session-dots" id="sessionDots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+
+        <div class="buttons">
+            <button id="startBtn" class="btn btn-primary">Start</button>
+            <button id="resetBtn" class="btn btn-secondary">Reset</button>
+        </div>
+    </div>
+
+    <div class="history-box">
+        <h2 id="historyTitle">History</h2>
+        <ul id="historyList">
+            <li class="empty-history">No sessions completed today yet.</li>
+        </ul>
+    </div>
+
+    <div id="breakModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Break Time!</h2>
+            <div id="modalTimer" class="modal-timer">00:11</div>
+            <img src="assets/break_time.png" alt="Break Time!">
+            <button id="closeModalBtn" class="btn btn-primary">End Break Early</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

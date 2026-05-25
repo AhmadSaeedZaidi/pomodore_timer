@@ -1,0 +1,22 @@
+{
+  "name": "mikutimer",
+  "version": "1.0.0",
+  "description": "Miku Pomodoro Timer",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server",
+    "deploy": "gh-pages -d ."
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "live-server": "^1.2.2"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "miku",
+    "focus"
+  ],
+  "author": "",
+  "license": "Apache-2.0"
+}
