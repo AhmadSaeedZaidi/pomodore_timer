@@ -5,6 +5,7 @@ const resetBtn = document.getElementById('resetBtn');
 const modeTitle = document.getElementById('modeTitle');
 const breakModal = document.getElementById('breakModal');
 const closeModalBtn = document.getElementById('closeModalBtn');
+const historyList = document.getElementById('historyList');
 
 const alarm = new Audio('miku_ringtone.mp3');
 
@@ -17,6 +18,68 @@ let secondsRemaining = studyDuration * 60;
 let isRunning = false;
 let currentMode = 'study';
 
+let historyData = {
+    date: new Date().toDateString(),
+    sessions: []
+};
+
+function loadHistory() {
+    const saved = localStorage.getItem('pomodoroHistory');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (parsed.date === new Date().toDateString()) {
+                historyData = parsed;
+            } else {
+                localStorage.removeItem('pomodoroHistory');
+            }
+        } catch (e) {
+            console.error("Error parsing focus history: ", e);
+        }
+    }
+    renderHistory();
+}
+
+function renderHistory() {
+    if (!historyList) return;
+    historyList.innerHTML = '';
+
+    if (historyData.sessions.length === 0) {
+        historyList.innerHTML = '<li class="empty-history">No sessions completed today yet.</li>';
+        return;
+    }
+
+    historyData.sessions.forEach(session => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${session.text}</span><span>${session.time}</span>`;
+        historyList.appendChild(li);
+    });
+}
+
+function logFocusSession() {
+    const totalSeconds = Math.round(studyDuration * 60);
+    const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+    const secs = (totalSeconds % 60).toString().padStart(2, '0');
+    const durationText = `${mins}:${secs}`;
+
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const timeText = `${hours}:${minutes}${ampm}`;
+
+    historyData.sessions.push({
+        text: `✓ ${durationText} focus`,
+        time: timeText
+    });
+
+    historyData.date = new Date().toDateString();
+    localStorage.setItem('pomodoroHistory', JSON.stringify(historyData));
+    renderHistory();
+}
+
 function updateDisplay() {
     const minutes = Math.floor(secondsRemaining / 60).toString().padStart(2, '0');
     const seconds = (secondsRemaining % 60).toString().padStart(2, '0');
@@ -28,6 +91,7 @@ function updateDisplay() {
         modalTimer.textContent = timeString;
     }
 }
+
 function triggerAlarm() {
     alarm.currentTime = 0;
     alarm.play().catch(err => console.log("Audio deferred: requires first user interaction."));
@@ -47,12 +111,12 @@ function silenceAlarm() {
 
 function switchMode() {
     if (currentMode === 'study') {
+        logFocusSession();
         currentMode = 'break';
         secondsRemaining = breakDuration * 60;
         modeTitle.textContent = 'Break';
 
         document.body.classList.add('break-mode');
-
         breakModal.style.display = 'flex';
     } else {
         currentMode = 'study';
@@ -60,14 +124,13 @@ function switchMode() {
         modeTitle.textContent = 'Study';
 
         document.body.classList.remove('break-mode');
-
         breakModal.style.display = 'none';
     }
 
     triggerAlarm();
-
     updateDisplay();
 }
+
 function toggleTimer() {
     if (isRunning) {
         clearInterval(timerInterval);
@@ -115,4 +178,5 @@ closeModalBtn.addEventListener('click', () => {
 startBtn.addEventListener('click', toggleTimer);
 resetBtn.addEventListener('click', resetTimer);
 
+loadHistory();
 updateDisplay();

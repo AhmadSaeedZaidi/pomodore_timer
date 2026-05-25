@@ -31,21 +31,25 @@ header img {
     display: block;
 }
 
-.container {
+.container,
+.history-box {
     background-color: transparent;
     border: 3px solid rgb(32, 75, 98);
-    border-top: none;
-    border-radius: 0 0 16px 16px;
-    /* Shorthand: top-left, top-right, bottom-right, bottom-left */
     padding: 3rem 2rem;
     width: calc(37.4% + 3px);
-    /* Calculated: (1402 - 636) / 2048 = 37.4% relative width + 3px */
     max-width: 769px;
-    /* Max absolute width: 766px + 3px */
     min-width: 303px;
-    /* mobile minimum constraint */
-    margin: 0 auto 3rem auto;
+    margin: 2rem auto;
     text-align: center;
+    transition: border-color 0.2s ease;
+}
+
+.container {
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    /* Shorthand: top flat, bottom rounded */
+    margin-top: 0;
+    margin-bottom: 3rem;
 }
 
 h1 {
@@ -131,7 +135,8 @@ h1 {
         flex-shrink: 0;
     }
 
-    .container {
+    .container,
+    .history-box {
         width: calc(74.8% + 6px);
         /* Mathematically exact: 37.4% * 2 = 74.8% + 6px to retain perfect image-alignment on mobile */
     }
@@ -205,4 +210,53 @@ body.break-mode #timer {
     text-indent: 0.05em;
     margin-bottom: 1.5rem;
     font-variant-numeric: tabular-nums;
+}
+
+/* history styling! */
+
+.history-box {
+    border-radius: 16px;
+    margin-bottom: 3rem;
+}
+
+body.break-mode .history-box {
+    border-color: var(--color-pink);
+}
+
+.history-box h2 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#historyList li {
+    font-size: 1rem;
+    color: var(--color-text);
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed var(--color-border);
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+}
+
+#historyList li:last-child {
+    border-bottom: none;
+}
+
+#historyList li.empty-history {
+    color: var(--color-muted);
+    justify-content: center;
+    border-bottom: none;
+    font-style: italic;
 }
