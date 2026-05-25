@@ -136,3 +136,73 @@ h1 {
         /* Mathematically exact: 37.4% * 2 = 74.8% + 6px to retain perfect image-alignment on mobile */
     }
 }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(22, 40, 51, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--color-surface);
+    border: 3px solid rgb(32, 75, 98);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 440px;
+    width: 85%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--color-border);
+    display: block;
+}
+
+/* break mode colour changes */
+body.break-mode {
+    --color-cyan: var(--color-pink);
+    --color-muted: var(--color-pink);
+}
+
+body.break-mode .container {
+    border-color: var(--color-pink);
+}
+
+body.break-mode .timer-display {
+    border-color: var(--color-pink);
+}
+
+body.break-mode #timer {
+    color: var(--color-pink);
+}
+
+.modal-content h2 {
+    font-size: 1.8rem;
+    color: var(--color-pink);
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.modal-timer {
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--color-pink);
+    letter-spacing: 0.05em;
+    text-indent: 0.05em;
+    margin-bottom: 1.5rem;
+    font-variant-numeric: tabular-nums;
+}

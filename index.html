@@ -15,7 +15,7 @@
     </header>
 
     <div class="container">
-        <h1>Pomodoro Timer</h1>
+        <h1 id="modeTitle">Study</h1>
 
         <div class="timer-display">
             <span id="timer">25:00</span>
@@ -24,6 +24,15 @@
         <div class="buttons">
             <button id="startBtn" class="btn btn-primary">Start</button>
             <button id="resetBtn" class="btn btn-secondary">Reset</button>
+        </div>
+    </div>
+
+    <div id="breakModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Break Time!</h2>
+            <div id="modalTimer" class="modal-timer">00:11</div>
+            <img src="break_time.png" alt="Break Time!">
+            <button id="closeModalBtn" class="btn btn-primary">End Break Early</button>
         </div>
     </div>
 
