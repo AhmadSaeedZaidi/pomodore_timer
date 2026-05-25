@@ -84,7 +84,8 @@ h1 {
 
 .buttons {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     justify-content: center;
 }
 
@@ -136,6 +137,18 @@ h1 {
     .history-box {
         width: calc(74.8% + 8px);
         /* Mathematically exact: 37.4% * 2 = 74.8% + 8px to retain perfect image-alignment on mobile */
+        padding: 2rem 1.2rem;
+    }
+
+    .modal-content img {
+        max-width: 260px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -238,13 +251,15 @@ body.break-mode .history-box {
 }
 
 #historyList li {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--color-text);
     padding: 0.6rem 0;
     border-bottom: 1px dashed var(--color-border);
     text-align: left;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 0.2rem;
 }
 
 #historyList li:last-child {
@@ -296,7 +311,8 @@ body.break-mode .history-box {
 
 .settings-box {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1rem;
     margin: 1.5rem auto 2.5rem auto;
     max-width: 320px;
