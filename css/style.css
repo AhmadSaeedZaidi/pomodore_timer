@@ -1,45 +1,129 @@
-/* Colors from miku colour palette */
+/* miku colour scheme */
 :root {
-    --color-blue-deep: #0ca5c5;
-    --color-purple: #e480ff;
-    --color-cyan: #00ecff;
-    --color-mint: #1ce5c2;
-    --color-blue-sky: #00abff;
-
-    --bg-app: #0f1015;
-    --bg-card: #181920;
-    --text-main: #ffffff;
+    --color-bg: #1e2f39;
+    --color-surface: #1a2833;
+    --color-border: #25414d;
+    --color-text: #e7fafe;
+    --color-muted: #55ced9;
+    --color-cyan: #7bf4eb;
+    --color-pink: #faa2de;
 }
 
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-app);
-    color: var(--text-main);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: sans-serif;
+}
+
+/* 1. Responsive Header Banner (guarantees full image visibility at all screen widths) */
+header {
+    width: 100%;
+}
+
+header img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .container {
-    background-color: var(--bg-card);
-    border: 2px solid var(--color-blue-sky);
-    border-radius: 12px;
-    padding: 40px;
-    width: 100%;
-    max-width: 320px;
+    background-color: transparent;
+    border: 3px solid rgb(32, 75, 98);
+    border-top: none;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 3rem 2rem;
+    width: 37.4%;
+    /* Calculated: (1402 - 636) / 2048 = 37.4% relative width */
+    max-width: 766px;
+    /* Max absolute width: 766px */
+    min-width: 300px;
+    /* mobile minimum constraint */
+    margin: 0 auto 3rem auto;
     text-align: center;
 }
 
-.timer-time {
-    font-size: 3rem;
-    font-weight: 700;
+h1 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.timer-display {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 2.5rem 4rem;
+    margin-bottom: 2rem;
+    background-color: var(--color-surface);
+    display: inline-block;
+}
+
+#timer {
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--color-cyan);
+    letter-spacing: 0.05em;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn {
+    background-color: transparent;
+    padding: 0.6rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary {
+    color: var(--color-pink);
+    border: 1px solid var(--color-pink);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-pink);
+    color: var(--color-surface);
+}
+
+.btn-secondary {
+    color: var(--color-cyan);
+    border: 1px solid var(--color-cyan);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-cyan);
+    color: var(--color-surface);
+}
+
+@media (max-width: 768px) {
+    header {
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    header img {
+        width: 200%;
+        max-width: none;
+        height: auto;
+        flex-shrink: 0;
+    }
 }

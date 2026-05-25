@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
+    <header>
+        <img src="miku_header.png" alt="Hatsune Miku header">
+    </header>
+
     <div class="container">
-        <span class="timer-time">25:00</span>
+        <h1>Pomodoro Timer</h1>
+
+        <div class="timer-display">
+            <span id="timer">25:00</span>
+        </div>
+
+        <div class="buttons">
+            <button id="startBtn" class="btn btn-primary">Start</button>
+            <button id="resetBtn" class="btn btn-secondary">Reset</button>
+        </div>
     </div>
 
     <script src="js/main.js"></script>
 </body>
+
 </html>
