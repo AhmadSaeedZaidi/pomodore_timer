@@ -1,6 +1,6 @@
 /* miku colour scheme */
 :root {
-    --color-bg: #1e2f39;
+    --color-bg: #162833;
     --color-surface: #1a2833;
     --color-border: #25414d;
     --color-text: #e7fafe;
@@ -21,7 +21,6 @@ body {
     font-family: sans-serif;
 }
 
-/* 1. Responsive Header Banner (guarantees full image visibility at all screen widths) */
 header {
     width: 100%;
 }
@@ -36,16 +35,14 @@ header img {
     background-color: transparent;
     border: 3px solid rgb(32, 75, 98);
     border-top: none;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    border-radius: 0 0 16px 16px;
+    /* Shorthand: top-left, top-right, bottom-right, bottom-left */
     padding: 3rem 2rem;
-    width: 37.4%;
-    /* Calculated: (1402 - 636) / 2048 = 37.4% relative width */
-    max-width: 766px;
-    /* Max absolute width: 766px */
-    min-width: 300px;
+    width: calc(37.4% + 3px);
+    /* Calculated: (1402 - 636) / 2048 = 37.4% relative width + 3px */
+    max-width: 769px;
+    /* Max absolute width: 766px + 3px */
+    min-width: 303px;
     /* mobile minimum constraint */
     margin: 0 auto 3rem auto;
     text-align: center;
@@ -125,5 +122,10 @@ h1 {
         max-width: none;
         height: auto;
         flex-shrink: 0;
+    }
+
+    .container {
+        width: calc(74.8% + 6px);
+        /* Mathematically exact: 37.4% * 2 = 74.8% + 6px to retain perfect image-alignment on mobile */
     }
 }
